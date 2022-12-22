@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\SectionController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +22,12 @@ Route::get('/', function () {
 });
 
 Auth::routes(['register' => false]);
+
+Route::resource('invoices',InvoiceController::class)
+    ->parameters(['invoices' => 'model']);
+
+Route::resource('sections',SectionController::class)
+    ->parameters(['sections' => 'model']);
 
 Route::controller(AdminController::class)
     ->group(function (){

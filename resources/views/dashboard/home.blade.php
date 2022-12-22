@@ -1,4 +1,5 @@
 @extends('layouts.master')
+@section('title','لوحة التحكم')
 @section('css')
     <!--  Owl-carousel css-->
     <link href="{{URL::asset('assets/plugins/owl-carousel/owl.carousel.css')}}" rel="stylesheet"/>
@@ -9,10 +10,12 @@
     <!-- breadcrumb -->
     <div class="breadcrumb-header justify-content-between">
         <div class="left-content">
+            @auth
             <div>
                 <h2 class="main-content-title tx-24 mg-b-1 mg-b-lg-1">مرحبا {{Auth::user()->name}}</h2>
                 <p class="mg-b-0 mt-1">لوحة التحكم الخاصة بالإدارة</p>
             </div>
+            @endauth
         </div>
         <div class="main-dashboard-header-right">
             <div>
@@ -501,16 +504,5 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Cairo', sans-serif;
-        }
 
-        .app-sidebar .side-item.side-item-category {
-            font-size: 14px;
-        }
-
-        }
-    </style>
 @endsection
