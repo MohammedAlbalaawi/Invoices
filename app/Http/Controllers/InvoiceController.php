@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\InvoiceRequest;
 use App\Models\Invoice;
+use App\Models\Product;
+use App\Models\Section;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class InvoiceController extends Controller
 {
@@ -14,7 +18,14 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        return  view('dashboard.invoices.index');
+        $invoices = Invoice::get();
+        return view('dashboard.invoices.index', compact('invoices'));
+    }
+
+    public function showProducts($id)
+    {
+        $products = Product::where('section_id', $id)->pluck('name', 'id');
+        return json_decode($products);
     }
 
     /**
@@ -24,62 +35,58 @@ class InvoiceController extends Controller
      */
     public function create()
     {
-        //
+        $sections = Section::get();
+        return view('dashboard.invoices.create', compact('sections'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(InvoiceRequest $request)
     {
-        //
+        $invoice = $request->validated();
+        $invoice['image'] = $request->file('image')->store('invoices');
+
+        Invoice::create($invoice);
+
+        return redirect()
+            ->route('invoices.index')
+            ->with('success', 'تم إضافة الفاتورة بنجاح');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Invoice  $invoice
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Invoice $invoice)
+    public function edit(Invoice $model)
     {
-        //
+        $sections = Section::get();
+        $products = Product::where('section_id', $model->section_id)->get();
+        return view('dashboard.invoices.edit', compact('model', 'sections', 'products'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Invoice  $invoice
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Invoice $invoice)
+    public function update(InvoiceRequest $request, Invoice $model)
     {
-        //
+        $invoice = $request->validated();
+
+        if ($request->hasFile('image')) {
+
+            if ($model->image && Storage::exists($model->image)) {
+                Storage::delete($model->image);
+            }
+
+            $model->image = $request->file('image')->store('invoices');
+        }
+
+        $model->update([$invoice]);
+
+        return redirect()
+            ->route('invoices.index')
+            ->with('success', 'تم تعديل الفاتورة بنجاح');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Invoice  $invoice
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Invoice $invoice)
+    public function destroy(Invoice $model)
     {
-        //
-    }
+        if ($model->image && Storage::exists($model->image)) {
+            Storage::delete($model->image);
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Invoice  $invoice
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Invoice $invoice)
-    {
-        //
+        $model->delete();
+        return redirect()
+            ->route('invoices.index')
+            ->with('success', 'invoice deleted successfully');
     }
 }

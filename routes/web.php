@@ -22,9 +22,9 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Auth::routes(['register' => false]);
+Auth::routes();
 
-
+Route::get('show-products/{id}', [InvoiceController::class,'showProducts']);
 Route::resource('invoices',InvoiceController::class)
     ->parameters(['invoices' => 'model'])
     ->middleware(['auth']);
