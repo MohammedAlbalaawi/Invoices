@@ -44,6 +44,24 @@ class InvoiceRequest extends FormRequest
         ];
     }
 
+    public function messages()
+    {
+        return [
+            'section_id.required' => 'الرجاء اختيار القسم',
+            'product_id.required' => 'الرجاء اختيار المنتج',
+            'invoice_number.required' => 'الرقم ادخال رقم الفاتورة',
+            'invoice_number.unique' => 'توجد فاتورة تحمل نفس الرقم',
+            'invoice_Date.required' => 'الرجاء اختيار تاريخ الفاتورة',
+            'due_date.required' => 'الرجاء اختيار تاريخ الدفع',
+            'amount_collection.required' => 'الرجاء ادخال المبلغ',
+            'amount_commission.required' =>'الرجاء ادخال قيمة العمولة',
+            'discount.required' => 'الرجاء ادخال قيمة الخصم',
+            'rate_vat.required' => 'الرجاء اختار نسبة الضريبة',
+            'value_vat.required' => 'حقل الضريبة مطلوب (قيمة محسوبة)',
+            'total.required' => 'حقل الاجمالي مطلوب (قيمة محسوبة)',
+        ];
+    }
+
     public function prepareForValidation()
     {
         $this->merge([

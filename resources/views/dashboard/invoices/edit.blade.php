@@ -23,15 +23,7 @@
                 <h4 class="content-title mb-0 my-auto">الفواتير</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/
                     تعديل فاتورة</span>
             </div>
-            <div style="margin: 0 auto;" class="col-md-3 mt-1 text-center">
-                @if ($errors->any())
-                    <div class="alert alert-danger text-right">
-                        @foreach ($errors->all() as $error)
-                            - {{ $error }}<br>
-                        @endforeach
-                    </div>
-                @endif
-            </div>
+
         </div>
     </div>
     <!-- breadcrumb -->
@@ -42,6 +34,15 @@
     <div class="row">
 
         <div class="col-lg-12 col-md-12">
+            <div style="margin: 0 auto;" class="col-md-3 mt-1 text-center">
+                @if ($errors->any())
+                    <div class="alert alert-danger text-right">
+                        @foreach ($errors->all() as $error)
+                            - {{ $error }}<br>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
             <div class="card">
                 <div class="card-body">
                     <form action="{{ route('invoices.update',['model' => $model->id]) }}" method="post"

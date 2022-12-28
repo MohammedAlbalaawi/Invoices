@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('css')
     <!--- Internal Select2 css-->
-    <link href="{{ URL::asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
+    <link href="{{ URL::asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet" />
     <!---Internal Fileupload css-->
     <link href="{{ URL::asset('assets/plugins/fileuploads/css/fileupload.css') }}" rel="stylesheet" type="text/css" />
     <!---Internal Fancy uploader css-->

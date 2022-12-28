@@ -60,7 +60,7 @@ class InvoiceController extends Controller
 
     public function update(InvoiceRequest $request, Invoice $model)
     {
-        $invoice = $request->validated();
+
 
         if ($request->hasFile('image')) {
 
@@ -71,7 +71,21 @@ class InvoiceController extends Controller
             $model->image = $request->file('image')->store('invoices');
         }
 
-        $model->update([$invoice]);
+        $model->update([
+            'section_id' => $request->section_id,
+            'product_id' => $request->product_id,
+            'invoice_number' => $request->invoice_number,
+            'invoice_Date' => $request->invoice_Date,
+            'due_date' => $request->due_date,
+            'amount_collection' => $request->amount_collection,
+            'amount_commission' => $request->amount_commission,
+            'discount' => $request->discount,
+            'rate_vat' => $request->rate_vat,
+            'value_vat' => $request->value_vat,
+            'total' => $request->total,
+            'note' => $request->note,
+            'status' => $request->status,
+        ]);
 
         return redirect()
             ->route('invoices.index')
