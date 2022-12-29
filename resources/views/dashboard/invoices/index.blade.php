@@ -70,7 +70,7 @@
                                 <td>{{$invoice->section->name}}</td>
                                 <td>{{$invoice->amount_collection}}</td>
                                 <td>{{$invoice->note}}</td>
-                                <td>{{$invoice->status == 1 ? 'غير مدفوعة' : 'مدفوعة'}}</td>
+                                <td>{{$invoice->status == 1 ? 'غير مدفوعة': 'مدفوعة'}}</td>
                                 <td>
 
                                     <div class="d-flex">
@@ -88,6 +88,7 @@
                                            data-total="{{$invoice->total}}"
                                            data-note="{{$invoice->note}}"
                                            data-image="{{$invoice->image}}"
+                                           data-attachment="{{$invoice->id}}"
                                            data-target="#modaldemo1" data-toggle="modal" href=""
                                            title="تفاصيل"><i class="las la-eye"></i></a>
 
@@ -201,6 +202,10 @@
                             <div class="row mt-2">
                                 <div class="col">
                                     <label>مرفقات</label>
+                                    <div class="d-flex m-1">
+                                    <a href="" id="showAttachment" target="_blank" class="btn btn-outline-success btn-sm mx-1" role="button"><i class="fas fa-eye"></i> عرض</a>
+                                    <a href="" id="downloadAttachment" class="btn btn-outline-info btn-sm" role="button"><i class="fas fa-download"></i> تحميل</a>
+                                    </div>
                                     <img src="" id="imageA" alt="photo">
                                 </div>
                             </div>
@@ -264,6 +269,9 @@
 
             var image = button.data('image')
 
+            var attachment = button.data('attachment')
+
+
             var modal = $(this)
             modal.find('.modal-body #invoice_number').val(invoice_number);
             modal.find('.modal-body #invoice_date').val(invoice_date);
@@ -284,6 +292,10 @@
             modal.find('.modal-body #image').val(image);
 
             $("#imageA").attr('src', "{{\Illuminate\Support\Facades\Storage::url('')}}"+ image)
+
+            $("#showAttachment").attr('href', "{{route('viewAttachment','')}}" +"/"+ attachment)
+
+            $("#downloadAttachment").attr('href', "{{route('downloadAttachment','')}}" +"/"+ attachment)
 
 
 

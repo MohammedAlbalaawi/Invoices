@@ -7,6 +7,7 @@ use App\Models\Invoice;
 use App\Models\Product;
 use App\Models\Section;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 
 class InvoiceController extends Controller
@@ -60,8 +61,6 @@ class InvoiceController extends Controller
 
     public function update(InvoiceRequest $request, Invoice $model)
     {
-
-
         if ($request->hasFile('image')) {
 
             if ($model->image && Storage::exists($model->image)) {
@@ -102,5 +101,21 @@ class InvoiceController extends Controller
         return redirect()
             ->route('invoices.index')
             ->with('success', 'invoice deleted successfully');
+
+        // VIEW ATTACHMENT
+//        return response()->file('storage/'.$model->image);
+
+        // DOWNLOAD ATTACHMENT
+//        return response()->download('storage/'.$model->image);
+    }
+
+    public function viewAttachment($id){
+        $img = Invoice::where('id', $id)->first()->image;
+        return response()->file('storage/'.$img);
+    }
+
+    public function downloadAttachment($id){
+        $img = Invoice::where('id', $id)->first()->image;
+        return response()->download('storage/'.$img);
     }
 }

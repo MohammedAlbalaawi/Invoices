@@ -7,22 +7,16 @@ use App\Http\Controllers\SectionController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 Route::get('/', function () {
     return view('auth.login');
 });
 
 Auth::routes();
+
+// Attachments
+Route::get('attachment/view/{id}', [InvoiceController::class,'viewAttachment'])->name('viewAttachment');
+Route::get('attachment/download/{id}', [InvoiceController::class,'downloadAttachment'])->name('downloadAttachment');
 
 Route::get('show-products/{id}', [InvoiceController::class,'showProducts']);
 Route::resource('invoices',InvoiceController::class)
